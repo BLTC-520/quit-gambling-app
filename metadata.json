@@ -1,0 +1,5 @@
+{
+  "name": "Remix: Baccarat Reality Check",
+  "description": "A 2D pixel game that tracks your gambling losses and converts them into real-world items to help you quit.",
+  "requestFramePermissions": []
+}
