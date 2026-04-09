@@ -29,3 +29,29 @@ export interface Item {
   price: number;
   icon: string;
 }
+
+export interface MysteryBoxResult {
+  readonly amount: number;
+  readonly opened: boolean;
+  readonly timestamp: number;
+}
+
+// ─── Slot machine types ──────────────────────────────────────────
+export interface SlotPayline {
+  readonly id: number;
+  readonly name: string;
+  readonly rows: readonly number[]; // length = REEL_COUNT (5)
+}
+
+export interface SlotWinningLine {
+  readonly paylineId: number;
+  readonly symbol: string;
+  readonly count: number; // 3, 4, or 5
+  readonly payout: number; // chips won on this line
+}
+
+export interface SlotSpinResult {
+  readonly grid: readonly (readonly string[])[];
+  readonly totalWin: number;
+  readonly winningLines: readonly SlotWinningLine[];
+}

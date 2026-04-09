@@ -134,16 +134,29 @@ export default function BlackjackTable({ balance, totalLost, onUpdateBalance, on
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-2 md:p-4 overflow-y-auto">
-      <div className="relative w-full max-w-5xl bg-blue-900 border-4 md:border-8 border-amber-900 rounded-[2rem] md:rounded-[3rem] p-4 md:p-8 shadow-2xl overflow-hidden min-h-[600px] md:min-h-0">
-        <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ 
+    <div
+      className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-2 md:p-4 overflow-y-auto"
+      onClick={onClose}
+      role="button"
+      tabIndex={-1}
+      aria-label="Close table"
+    >
+      <div
+        className="relative w-full max-w-5xl bg-blue-900 border-4 md:border-8 border-amber-900 rounded-[2rem] md:rounded-[3rem] p-4 md:p-8 shadow-2xl overflow-hidden min-h-[600px] md:min-h-0"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close blackjack table"
+          className="absolute top-3 right-3 md:top-5 md:right-5 z-[70] bg-red-600 hover:bg-red-500 text-white p-2 rounded-full transition-colors shadow-lg border-2 border-red-300"
+        >
+          <X size={22} />
+        </button>
+        <div className="absolute inset-0 opacity-10 pointer-events-none" style={{
           backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)',
           backgroundSize: '40px 40px'
         }} />
-
-        <button onClick={onClose} className="absolute top-4 right-4 md:top-6 md:right-6 text-blue-200 hover:text-white transition-colors z-10">
-          <X size={24} md:size={32} />
-        </button>
 
         <div className="flex flex-col lg:flex-row gap-4 md:gap-8 h-full relative">
           <div className="flex-1 flex flex-col">

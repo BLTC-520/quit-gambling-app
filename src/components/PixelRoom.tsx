@@ -6,9 +6,13 @@ import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
 interface PixelRoomProps {
   onEnterBaccarat: () => void;
   onEnterBlackjack: () => void;
+  onEnterWorkStation: () => void;
+  onLeaveWorkStation: () => void;
+  onEnterSlotMachine: () => void;
+  isAtWorkStation: boolean;
 }
 
-export default function PixelRoom({ onEnterBaccarat, onEnterBlackjack }: PixelRoomProps) {
+export default function PixelRoom({ onEnterBaccarat, onEnterBlackjack, onEnterWorkStation, onLeaveWorkStation, onEnterSlotMachine, isAtWorkStation }: PixelRoomProps) {
   const [pos, setPos] = useState({ x: 50, y: 50 });
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -46,7 +50,18 @@ export default function PixelRoom({ onEnterBaccarat, onEnterBlackjack }: PixelRo
     if (pos.x > 60 && pos.x < 80 && pos.y > 40 && pos.y < 60) {
       onEnterBlackjack();
     }
-  }, [pos, onEnterBaccarat, onEnterBlackjack]);
+    // Work Station (Bottom Center)
+    const inWorkZone = pos.x > 35 && pos.x < 65 && pos.y > 75 && pos.y < 95;
+    if (inWorkZone) {
+      onEnterWorkStation();
+    } else if (isAtWorkStation) {
+      onLeaveWorkStation();
+    }
+    // Betting Slot Machine (Top Center)
+    if (pos.x > 35 && pos.x < 65 && pos.y >= 0 && pos.y < 15) {
+      onEnterSlotMachine();
+    }
+  }, [pos, onEnterBaccarat, onEnterBlackjack, onEnterWorkStation, onLeaveWorkStation, onEnterSlotMachine, isAtWorkStation]);
 
   return (
     <div 
@@ -82,6 +97,36 @@ export default function PixelRoom({ onEnterBaccarat, onEnterBlackjack }: PixelRo
         <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-red-600 text-[6px] md:text-[8px] text-white rounded animate-pulse">
           ENTER
         </div>
+      </div>
+
+      {/* Betting Slot Machine (Top Center) */}
+      <div
+        className="absolute left-1/2 top-[4%] -translate-x-1/2 w-28 h-14 md:w-36 md:h-16 bg-gradient-to-b from-purple-800 to-purple-950 border-2 md:border-4 border-yellow-500 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(234,179,8,0.4)]"
+      >
+        <div className="text-[8px] md:text-[10px] text-yellow-200 font-bold text-center">
+          🎰 SLOT<br/>MACHINE
+        </div>
+        <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-red-600 text-[6px] md:text-[8px] text-white rounded animate-pulse">
+          ENTER
+        </div>
+      </div>
+
+      {/* Work Station (Bottom Center) */}
+      <div
+        className="absolute left-1/2 bottom-[8%] -translate-x-1/2 w-28 h-14 md:w-36 md:h-16 bg-amber-900/80 border-2 md:border-4 border-amber-600 rounded-xl flex items-center justify-center shadow-lg"
+      >
+        <div className="text-[8px] md:text-[10px] text-amber-200 font-bold text-center">
+          🎰 WORK<br/>STATION
+        </div>
+        {isAtWorkStation ? (
+          <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-green-600 text-[6px] md:text-[8px] text-white rounded font-bold">
+            EARNING
+          </div>
+        ) : (
+          <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-amber-600 text-[6px] md:text-[8px] text-white rounded animate-pulse">
+            ENTER
+          </div>
+        )}
       </div>
 
       {/* Player Pixel */}
