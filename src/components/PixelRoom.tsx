@@ -9,10 +9,11 @@ interface PixelRoomProps {
   onEnterWorkStation: () => void;
   onLeaveWorkStation: () => void;
   onEnterSlotMachine: () => void;
+  onEnterFunStation: () => void;
   isAtWorkStation: boolean;
 }
 
-export default function PixelRoom({ onEnterBaccarat, onEnterBlackjack, onEnterWorkStation, onLeaveWorkStation, onEnterSlotMachine, isAtWorkStation }: PixelRoomProps) {
+export default function PixelRoom({ onEnterBaccarat, onEnterBlackjack, onEnterWorkStation, onLeaveWorkStation, onEnterSlotMachine, onEnterFunStation, isAtWorkStation }: PixelRoomProps) {
   const [pos, setPos] = useState({ x: 50, y: 50 });
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -61,7 +62,11 @@ export default function PixelRoom({ onEnterBaccarat, onEnterBlackjack, onEnterWo
     if (pos.x > 35 && pos.x < 65 && pos.y >= 0 && pos.y < 15) {
       onEnterSlotMachine();
     }
-  }, [pos, onEnterBaccarat, onEnterBlackjack, onEnterWorkStation, onLeaveWorkStation, onEnterSlotMachine, isAtWorkStation]);
+    // Fun Station (Top Left)
+    if (pos.x >= 0 && pos.x < 20 && pos.y > 5 && pos.y < 25) {
+      onEnterFunStation();
+    }
+  }, [pos, onEnterBaccarat, onEnterBlackjack, onEnterWorkStation, onLeaveWorkStation, onEnterSlotMachine, onEnterFunStation, isAtWorkStation]);
 
   return (
     <div 
@@ -95,6 +100,18 @@ export default function PixelRoom({ onEnterBaccarat, onEnterBlackjack, onEnterWo
           BLACKJACK<br/>TABLE
         </div>
         <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-red-600 text-[6px] md:text-[8px] text-white rounded animate-pulse">
+          ENTER
+        </div>
+      </div>
+
+      {/* Fun Station (Top Left) */}
+      <div
+        className="absolute left-[3%] top-[8%] w-24 h-14 md:w-32 md:h-16 bg-gradient-to-b from-pink-700 to-pink-950 border-2 md:border-4 border-pink-400 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(236,72,153,0.4)]"
+      >
+        <div className="text-[8px] md:text-[10px] text-pink-200 font-bold text-center">
+          ✨ FUN<br/>STATION
+        </div>
+        <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-pink-600 text-[6px] md:text-[8px] text-white rounded animate-pulse">
           ENTER
         </div>
       </div>

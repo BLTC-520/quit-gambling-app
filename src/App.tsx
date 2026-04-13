@@ -8,6 +8,7 @@ import AuthScreen from './components/AuthScreen';
 import SlotMachine from './components/SlotMachine';
 import BettingSlotMachine from './components/BettingSlotMachine';
 import ChipGenerator from './components/ChipGenerator';
+import FunStation from './components/FunStation';
 import { AnimatePresence } from 'motion/react';
 import { Wallet, Info, AlertCircle, TrendingDown, LogOut, Zap } from 'lucide-react';
 import { api, type PlayerData } from './lib/api';
@@ -27,6 +28,7 @@ export default function App() {
   const [showBaccarat, setShowBaccarat] = useState(false);
   const [showBlackjack, setShowBlackjack] = useState(false);
   const [showBettingSlot, setShowBettingSlot] = useState(false);
+  const [showFunStation, setShowFunStation] = useState(false);
 
   // Work station state
   const [showSlotMachine, setShowSlotMachine] = useState(false);
@@ -96,6 +98,20 @@ export default function App() {
     if (showBaccarat || showBlackjack || showBettingSlot) return;
     setShowBettingSlot(true);
   }, [showBaccarat, showBlackjack, showBettingSlot]);
+
+  const handleEnterFunStation = useCallback(() => {
+    if (showBaccarat || showBlackjack || showBettingSlot || showFunStation) return;
+    setShowFunStation(true);
+  }, [showBaccarat, showBlackjack, showBettingSlot, showFunStation]);
+
+  const handleFunEarned = useCallback((amount: number) => {
+    if (amount <= 0) return;
+    setBalance(prev => {
+      const newBalance = prev + amount;
+      api.updateBalance(newBalance, 0).catch(() => {});
+      return newBalance;
+    });
+  }, []);
 
   // Work station handlers
   const handleEnterWorkStation = useCallback(() => {
@@ -188,6 +204,7 @@ export default function App() {
               onEnterWorkStation={handleEnterWorkStation}
               onLeaveWorkStation={handleLeaveStation}
               onEnterSlotMachine={handleEnterSlotMachine}
+              onEnterFunStation={handleEnterFunStation}
               isAtWorkStation={isAtStation}
             />
 
@@ -252,6 +269,12 @@ export default function App() {
               totalLost={totalLost}
               onUpdateBalance={handleUpdateBalance}
               onClose={() => setShowBettingSlot(false)}
+            />
+          )}
+          {showFunStation && (
+            <FunStation
+              onEarned={handleFunEarned}
+              onClose={() => setShowFunStation(false)}
             />
           )}
         </AnimatePresence>
